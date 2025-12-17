@@ -1,0 +1,106 @@
+<!-- public/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>TalentTrack – AI Auto-Apply Live Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body { font-family: 'Segoe UI', system-ui, sans-serif; max-width: 1300px; margin: 40px auto; padding: 20px; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); color: #1e293b; }
+    h1 { text-align: center; color: #0c4a6e; font-size: 2.6em; margin-bottom: 8px; }
+    .subtitle { text-align: center; color: #64748b; font-size: 1.3em; margin-bottom: 50px; font-weight: 500; }
+    #updates { list-style: none; padding: 0; }
+    #updates li { background: white; border-radius: 20px; padding: 32px; margin: 24px 0; box-shadow: 0 12px 40px rgba(0,0,0,0.1); border-left: 8px solid #e2e8f0; transition: all 0.4s ease; }
+    #updates li:hover { transform: translateY(-8px); box-shadow: 0 24px 50px rgba(0,0,0,0.18); }
+    .high-score { border-left-color: #10b981; background: linear-gradient(to right, #f0fdf4, white); }
+    .processed { border-left-color: #6366f1; background: linear-gradient(to right, #eef2ff, white); }
+    .job-title { font-size: 1.8em; font-weight: 800; color: #0c4a6e; margin: 0 0 16px 0; }
+    .meta { display: flex; flex-wrap: wrap; gap: 16px; color: #64748b; font-size: 1.1em; margin-bottom: 20px; align-items: center; }
+    pre { background: #f8fafc; padding: 24px; border-radius: 14px; margin: 20px 0; font-size: 1em; line-height: 1.8; border: 1px solid #e2e8f0; font-family: 'Consolas', monospace; }
+    .status-badge { padding: 8px 18px; border-radius: 30px; font-weight: 700; font-size: 0.95em; }
+    .status-processing { background: #fffbeb; color: #d97706; }
+    .status-complete { background: #ecfdf5; color: #059669; }
+    .score-high { color: #059669; font-weight: bold; font-size: 1.3em; }
+    .email-preview { margin-top: 24px; padding: 20px; background: #fffbeb; border-radius: 14px; border-left: 6px solid #f59e0b; font-size: 1em; }
+    .email-preview strong { color: #92400e; }
+  </style>
+</head>
+<body>
+  <h1>TalentTrack AI Auto-Apply Engine</h1>
+  <p class="subtitle">User Resume → AI Matching → Auto-Application → Email Notification</p>
+  <ul id="updates"></ul>
+
+  <script>
+    async function loadAutoApplies() {
+      try {
+        const res = await fetch('/__motia/api/state/autoapply-jobs');
+        if (!res.ok) {
+          document.getElementById('updates').innerHTML = '<li style="text-align:center; color:#888; padding:80px;">Connecting...</li>';
+          return;
+        }
+        const data = await res.json();
+        const ul = document.getElementById('updates');
+        ul.innerHTML = '';
+        
+        if (Object.keys(data).length === 0) {
+          ul.innerHTML = `
+            <li style="text-align:center; color:#888; padding:100px;">
+              <h2>Ready to Start AI Auto-Apply</h2>
+              <p style="font-size:1.2em;">Flow:</p>
+              <ol style="text-align:left; max-width:700px; margin:30px auto; font-size:1.1em; line-height:2;">
+                <li>1. Load candidate resumes</li>
+                <li>2. Discover new jobs</li>
+                <li>3. AI compares each resume with job</li>
+                <li>4. Auto-submit applications for matches</li>
+                <li>5. Send email notification to candidate</li>
+              </ol>
+              <p><strong>Trigger now:</strong> POST /api/autoapply/trigger</p>
+            </li>`;
+          return;
+        }
+
+        Object.values(data).reverse().forEach(job => {
+          const li = document.createElement('li');
+          if (job.applicationsSubmitted > 0 && job.highestScore >= 80) li.classList.add('high-score');
+          if (job.processed) li.classList.add('processed');
+          
+          const statusBadge = job.processed
+            ? '<span class="status-badge status-complete">✓ Complete</span>'
+            : '<span class="status-badge status-processing">⟳ Processing</span>';
+          
+          const scoreClass = job.highestScore >= 80 ? 'score-high' : '';
+
+          li.innerHTML = `
+            <div class="job-title">${job.title}</div>
+            <div class="meta">
+              ${statusBadge}
+              <strong>${job.companyName}</strong> • ${job.jobNiche} • ${job.location}
+              <strong>${job.applicationsSubmitted} candidate${job.applicationsSubmitted !== 1 ? 's' : ''} applied</strong>
+            </div>
+            <pre>
+<strong>🤖 AI Highest Match Score:</strong> <span class="${scoreClass}">${job.highestScore || 'Analyzing...'}/100</span>
+<strong>💰 Salary:</strong> ${job.salary || 'Competitive'}
+<strong>📍 Location:</strong> ${job.location}
+<strong>📧 Status:</strong> ${job.processed ? 'Applications submitted + emails sent' : 'AI analyzing resumes...'}
+<strong>🕐 Updated:</strong> ${new Date(job.lastUpdated).toLocaleString()}
+            </pre>
+            <div class="email-preview">
+              <strong>📧 Email Sent to Candidates:</strong><br><br>
+              "Great news! We auto-applied you to:<br>
+              <strong>${job.title}</strong> at <strong>${job.companyName}</strong><br>
+              Salary: ${job.salary} • Location: ${job.location}<br>
+              AI Match: Up to ${job.highestScore}/100"
+            </div>
+          `;
+          ul.appendChild(li);
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    loadAutoApplies();
+    setInterval(loadAutoApplies, 3000);
+  </script>
+</body>
+</html>

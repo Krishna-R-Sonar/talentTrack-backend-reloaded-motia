@@ -1,0 +1,35 @@
+[
+  {
+    "id": "auto-apply-flow",
+    "config": {
+      "src\\trigger-autoapply.api.step.ts": {
+        "x": -900,
+        "y": -150
+      },
+      "src\\submit-application.event.step.ts": {
+        "x": 300,
+        "y": -75
+      },
+      "src\\send-email-notification.event.step.ts": {
+        "x": 1251,
+        "y": 148
+      },
+      "src\\load-mock-users.event.step.ts": {
+        "x": 284,
+        "y": 148
+      },
+      "src\\find-new-jobs.event.step.ts": {
+        "x": -300,
+        "y": -25
+      },
+      "src\\daily-auto-apply-cron.step.ts": {
+        "x": 16,
+        "y": 203
+      },
+      "src\\ai-compare-resume.event.step.ts": {
+        "x": 0,
+        "y": -25
+      }
+    }
+  }
+]

@@ -1,0 +1,12 @@
+# motia.yaml
+name: talenttrack-autoapply
+runtime: node
+
+observability:
+  enabled: true
+
+state:
+  provider: local
+
+streaming:
+  enabled: true
