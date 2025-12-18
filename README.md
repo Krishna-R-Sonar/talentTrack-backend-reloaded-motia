@@ -1,8 +1,5 @@
 # TalentTrack – AI-Powered Job Portal Backend
 
-![Motia Workflow Screenshot](https://drive.google.com/file/d/12Gu92e0EVYus7nvKlJF1sAVm33zRYsJT/view?usp=sharing)  
-*Visual flow of the AI Auto-Apply engine built with Motia*
-
 ## Flashback: The Journey of TalentTrack
 
 TalentTrack started as my ambitious **full-stack MERN (MongoDB, Express, React, Node.js) job portal** project aimed at revolutionizing how job seekers find and apply to opportunities.
