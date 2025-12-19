@@ -3,32 +3,32 @@
     "id": "auto-apply-flow",
     "config": {
       "src\\trigger-autoapply.api.step.ts": {
-        "x": -900,
-        "y": -150
+        "x": -894,
+        "y": -282
       },
       "src\\submit-application.event.step.ts": {
-        "x": 300,
-        "y": -75
+        "x": 350,
+        "y": -182
       },
       "src\\send-email-notification.event.step.ts": {
-        "x": 1251,
-        "y": 148
+        "x": 648,
+        "y": 21
       },
       "src\\load-mock-users.event.step.ts": {
-        "x": 284,
-        "y": 148
+        "x": -403,
+        "y": -49
       },
       "src\\find-new-jobs.event.step.ts": {
-        "x": -300,
-        "y": -25
+        "x": -173,
+        "y": -173
       },
       "src\\daily-auto-apply-cron.step.ts": {
-        "x": 16,
-        "y": 203
+        "x": -876,
+        "y": 70
       },
       "src\\ai-compare-resume.event.step.ts": {
-        "x": 0,
-        "y": -25
+        "x": 40,
+        "y": 20
       }
     }
   }
