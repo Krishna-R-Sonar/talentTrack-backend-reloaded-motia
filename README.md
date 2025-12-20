@@ -100,7 +100,7 @@ You’ll instantly see:
 ## Try It Yourself (Non-Docker)
 
 ```bash
-git clone 
+git clone https://github.com/Krishna-R-Sonar/talentTrack-backend-reloaded-motia
 cd talenttrack-motia
 npm install
 npm run dev
